@@ -1,6 +1,5 @@
 package DCS4.kafka.consumer;
 
-import DCS4.kafka.dto.TestDTO;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -17,18 +16,20 @@ import java.util.concurrent.CountDownLatch;
 public class KafkaConsumer {
 
     private CountDownLatch latch = new CountDownLatch(10);
-    private List<TestDTO> payloads = new ArrayList<>();
-    private TestDTO payload;
+    private List<String> payloads = new ArrayList<>();
+    private String payload;
 
-    @KafkaListener(topics = "baeldung", containerFactory = "filterListenerContainerFactory")
-    public void receive(ConsumerRecord<String, TestDTO> consumerRecord) {
+    @KafkaListener(topics = "wiki", containerFactory = "concurrentKafkaListenerContainerFactory")
+    public void receive(ConsumerRecord<String, String> consumerRecord) {
         payload = consumerRecord.value();
-        log.info("received payload = {}", payload.toString());
-        payloads.add(payload);
+        if (payload != null) {
+            log.info("received payload = {}", payload.toString());
+            payloads.add(payload);
+        }
         latch.countDown();
     }
 
-    public List<TestDTO> getPayloads() {
+    public List<String> getPayloads() {
         return payloads;
     }
 
