@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-@Component
+//@Component
 @Data
 @Slf4j
 public class KafkaConsumer {

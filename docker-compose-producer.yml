@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  producer:
+    build:
+      context: ./kafka
+      dockerfile: Dockerfile
+    image: ajroot/producer
+    container_name: producer
+    environment:
+      - KAFKA_BROKER=kafka
+
+networks:
+  default:
+    name: kafka-net
