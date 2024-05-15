@@ -1,0 +1,7 @@
+FROM bitnami/kafka:latest
+
+USER root
+RUN apt-get update && apt-get install -y netcat-openbsd
+
+# COPY ./scripts/create-kafka-topics.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/create-kafka-topics.sh
