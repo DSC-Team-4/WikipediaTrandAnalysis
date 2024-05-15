@@ -1,1 +1,1 @@
-# WikipediaTrandAnalysis
+# WikipediaTrendAnalysis
