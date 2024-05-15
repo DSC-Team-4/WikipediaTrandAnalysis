@@ -9,7 +9,10 @@ services:
       - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
-    image: bitnami/kafka:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.kafka
+    image: ajroot/kafka
     container_name: kafka
     depends_on:
       - zookeeper
