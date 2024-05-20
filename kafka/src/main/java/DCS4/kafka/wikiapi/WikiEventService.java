@@ -33,7 +33,6 @@ public class WikiEventService {
                 .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {});
 
         eventStreamDisposable = eventStream
-                .take(Duration.ofSeconds(10))
                 .subscribe(
                     content -> kafkaTemplate.send("wiki", content.data()),
                     error -> System.out.println("error = " + error),
