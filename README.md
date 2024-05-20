@@ -14,7 +14,6 @@
     - kafka 디렉토리 이동
     - ./gradlew build
     - 다시 scripts 디렉토리로 이동하여 ./producer-up.sh 실행
-    - (현재 10초동안만 실행됨)
 
 - consumer 테스트
     - kafka 컨테이너 실행(exec)
