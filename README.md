@@ -11,9 +11,11 @@
 - wiki 토픽 생성 확인
     - /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
 - producer 실행
-    - kafka 디렉토리 이동
-    - ./gradlew build
-    - 다시 scripts 디렉토리로 이동하여 ./producer-up.sh 실행
+    - (최초 1회만)
+        - kafka 디렉토리 이동
+        - ./gradlew build
+    - scripts 디렉토리로 이동하여 ./producer-up.sh 실행
+    - 테스트 끝났으면 ./producer-down.sh 실행
 
 - consumer 테스트
     - kafka 컨테이너 실행(exec)
