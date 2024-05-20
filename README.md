@@ -19,4 +19,4 @@
 
 - consumer 테스트
     - kafka 컨테이너 실행(exec)
-    - /opt/bitnami/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic wiki —group wiki_collectors --from-beginning
+    - /opt/bitnami/kafka/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic wiki --group wiki_collectors --from-beginning
