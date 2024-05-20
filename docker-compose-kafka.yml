@@ -18,6 +18,7 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "9093:9093"
     env_file:
       - .env
 
