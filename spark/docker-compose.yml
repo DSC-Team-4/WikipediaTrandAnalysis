@@ -1,24 +1,4 @@
 services:
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    ports:
-      - "2181:2181"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    networks:
-      - spark-kafka-network
-
-  kafka:
-    image: bitnami/kafka:latest
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    networks:
-      - spark-kafka-network
-
   zeppelin:
     image: apache/zeppelin:0.9.0
     ports:
@@ -33,7 +13,7 @@ services:
       - ZEPPELIN_PORT=8080
     user: root
     networks:
-      - spark-kafka-network
+      - spark-network
     depends_on:
       - spark-master
 
@@ -52,7 +32,7 @@ services:
     volumes:
       - ./spark-app:/opt/spark-app
     networks:
-      - spark-kafka-network
+      - spark-network
 
   spark-worker-1:
     image: bitnami/spark:latest
@@ -65,7 +45,7 @@ services:
     volumes:
       - ./spark-app:/opt/spark-app
     networks:
-      - spark-kafka-network
+      - spark-network
 
   spark-worker-2:
     image: bitnami/spark:latest
@@ -78,7 +58,20 @@ services:
     volumes:
       - ./spark-app:/opt/spark-app
     networks:
-      - spark-kafka-network
+      - spark-network
+
+  spark-worker-3:
+    image: bitnami/spark:latest
+    container_name: spark-worker-3
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=1
+    volumes:
+      - ./spark-app:/opt/spark-app
+    networks:
+      - spark-network
 
   jupyter:
     image: jupyter/pyspark-notebook:latest
@@ -90,8 +83,8 @@ services:
     environment:
       - SPARK_MASTER=spark://spark-master:7077
     networks:
-      - spark-kafka-network
+      - spark-network
 
 networks:
-  spark-kafka-network:
+  spark-network:
     driver: bridge
