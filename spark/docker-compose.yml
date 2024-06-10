@@ -6,6 +6,7 @@ services:
     volumes:
       - ./zeppelin/notebook:/notebook
       - ./zeppelin/logs:/logs
+      - ./spark-app:/opt/spark-app
     environment:
       - ZEPPELIN_LOG_DIR=/logs
       - ZEPPELIN_NOTEBOOK_DIR=/notebook
