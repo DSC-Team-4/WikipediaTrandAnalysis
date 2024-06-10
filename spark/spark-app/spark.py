@@ -17,7 +17,6 @@ kafka_df = spark.readStream \
     .option("subscribe", "wiki") \
     .option("startingOffsets", "earliest") \
     .option("failOnDataLoss", "false") \
-    .option("kafka.group.id", "wiki_collectors") \
     .load()
 
 # Kafka 메시지의 value는 기본적으로 바이너리 형식이므로 문자열로 변환
@@ -72,7 +71,7 @@ parsed_df.writeStream \
     .format("console") \
     .outputMode("append") \
     .start() \
-    .awaitTermination(50)
+    .awaitTermination(60)
 
 # JSON 파일로 저장
 query = parsed_df.writeStream \
