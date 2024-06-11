@@ -33,6 +33,9 @@ public class WikiEventService {
                 .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {});
 
         eventStreamDisposable = eventStream
+                .doOnError(e -> log.error("evenstreamAPI 오류발생 : ", e))
+                .doOnComplete(() -> log.error("stream 완료"))
+                .retry()
                 .subscribe(
                     content -> kafkaTemplate.send("wiki", content.data()),
                     error -> System.out.println("error = " + error),
