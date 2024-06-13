@@ -28,7 +28,7 @@ public class WikiEventService {
     @PostConstruct
     public void subscribeWikiEvents() {
         Flux<ServerSentEvent<String>> eventStream = webClient.get()
-                .uri("/v2/stream/mediawiki.page_change.v1")
+                .uri("/v2/stream/recentchange")
                 .retrieve()
                 .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {});
 
