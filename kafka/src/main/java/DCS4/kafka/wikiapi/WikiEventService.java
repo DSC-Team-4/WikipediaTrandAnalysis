@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 
@@ -30,12 +31,16 @@ public class WikiEventService {
         Flux<ServerSentEvent<String>> eventStream = webClient.get()
                 .uri("/v2/stream/recentchange")
                 .retrieve()
-                .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {});
+                .bodyToFlux(new ParameterizedTypeReference<ServerSentEvent<String>>() {
+                })
+                .timeout(Duration.ofSeconds(30))
+                .retryWhen(Retry.backoff(Long.MAX_VALUE, Duration.ofSeconds(1))
+                        .maxBackoff(Duration.ofSeconds(10))
+                        .jitter(0.5));
 
         eventStreamDisposable = eventStream
                 .doOnError(e -> log.error("evenstreamAPI 오류발생 : ", e))
                 .doOnComplete(() -> log.error("stream 완료"))
-                .retry()
                 .subscribe(
                     content -> kafkaTemplate.send("wiki", content.data()),
                     error -> System.out.println("error = " + error),
